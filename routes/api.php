@@ -19,13 +19,34 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //-----------------------------------------------------------------------------
 
+//authentication
+Route::post('register', 'UserController@register');
+Route::post('login', 'UserController@authenticate');
 
-Route::get('topics', 'TopicController@index');
+//authorization + method
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('user', 'UserController@getAuthenticatedUser');
 
-Route::get('topics/{topic}', 'TopicController@show');
+    //topics
+    Route::get('topics', 'TopicController@index');
+    Route::get('topics/{topic}', 'TopicController@show');
+    Route::post('topics', 'TopicController@store');
+    Route::put('topics/{topic}', 'TopicController@update');
+    Route::delete('topics/{topic}', 'TopicController@delete');
 
-Route::post('topics', 'TopicController@store');
+    //posts
+    Route::get('topics/{topic_id}/posts', 'PostController@index');
+    Route::get('topics/{topic_id}/posts/{post}', 'PostController@show');
+    Route::post('topics/{topic_id}/posts', 'PostController@store');
+    Route::put('topics/{topic_id}/posts/{post}', 'PostController@update');
+    Route::delete('topics/{topic_id}/posts/{post}', 'PostController@delete');
 
-Route::put('topics/{topic}', 'TopicController@update');
+});
 
-Route::delete('topics/{topic}', 'TopicController@delete');
+
+
+
+
+
+
+
