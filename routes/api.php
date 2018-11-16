@@ -13,42 +13,43 @@ use Illuminate\Http\Request;
 |
 */
 
+/*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+*/
+
 
 //-----------------------------------------------------------------------------
 
 //authentication
-Route::post('register', 'UserController@register');
-Route::post('login', 'UserController@authenticate');
+Route::post('register', 'AuthController@register');
+Route::post('login', [ 'as' => 'login', 'uses' => 'AuthController@login']);
 
 //authorization + method
 Route::group(['middleware' => ['jwt.verify']], function() {
+//Route::group(['middleware' => ['api']], function() {
 
-    //Route::post('logout', 'UserController@logout');
+    Route::post('logout', 'AuthController@logout');
 
     Route::group(['middleware' => ['checkRole:admin|user']], function() {
-        Route::get('user', 'UserController@getAuthenticatedUser');
-        Route::get('topics', 'TopicController@index');
+        Route::get('user', 'AuthController@getAuthenticatedUser');
 
+        //topics
+        Route::get('topics', 'TopicController@index');
         Route::get('topics/{topic}', 'TopicController@show');
         Route::post('topics', 'TopicController@store');
         Route::put('topics/{topic}', 'TopicController@update');
-
         Route::delete('topics/{topic}', 'TopicController@delete');
+
+        //posts
+        Route::get('topics/{topic_id}/posts', 'PostController@index');
+        Route::get('topics/{topic_id}/posts/{post}', 'PostController@show');
+        Route::post('topics/{topic_id}/posts', 'PostController@store');
+        Route::put('topics/{topic_id}/posts/{post}', 'PostController@update');
+        Route::delete('topics/{topic_id}/posts/{post}', 'PostController@delete');
+
     });
-
-    //topics
-
-
-
-    //posts
-    Route::get('topics/{topic_id}/posts', 'PostController@index');
-    Route::get('topics/{topic_id}/posts/{post}', 'PostController@show');
-    Route::post('topics/{topic_id}/posts', 'PostController@store');
-    Route::put('topics/{topic_id}/posts/{post}', 'PostController@update');
-    Route::delete('topics/{topic_id}/posts/{post}', 'PostController@delete');
 
 });
 

@@ -28,6 +28,10 @@ class CheckRole
         ]);
         */
 
+        if (auth()->user() == null) {
+            return response()->json(['status' => 'Unauthorized'], 401);
+        }
+
         $user_role = auth()->user()->role['name'];
 
         $roles_array = explode('|', $roles);
