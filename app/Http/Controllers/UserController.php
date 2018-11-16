@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
+    //login
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -26,6 +27,19 @@ class UserController extends Controller
         return response()->json(compact('token'));
     }
 
+    //logout
+
+    /*
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    */
+
+
+    //register
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -49,6 +63,7 @@ class UserController extends Controller
         return response()->json(compact('user','token'),201);
     }
 
+    //get user
     public function getAuthenticatedUser()
     {
         try {

@@ -25,14 +25,23 @@ Route::post('login', 'UserController@authenticate');
 
 //authorization + method
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::get('user', 'UserController@getAuthenticatedUser');
+
+    //Route::post('logout', 'UserController@logout');
+
+    Route::group(['middleware' => ['checkRole:admin|user']], function() {
+        Route::get('user', 'UserController@getAuthenticatedUser');
+        Route::get('topics', 'TopicController@index');
+
+        Route::get('topics/{topic}', 'TopicController@show');
+        Route::post('topics', 'TopicController@store');
+        Route::put('topics/{topic}', 'TopicController@update');
+
+        Route::delete('topics/{topic}', 'TopicController@delete');
+    });
 
     //topics
-    Route::get('topics', 'TopicController@index');
-    Route::get('topics/{topic}', 'TopicController@show');
-    Route::post('topics', 'TopicController@store');
-    Route::put('topics/{topic}', 'TopicController@update');
-    Route::delete('topics/{topic}', 'TopicController@delete');
+
+
 
     //posts
     Route::get('topics/{topic_id}/posts', 'PostController@index');

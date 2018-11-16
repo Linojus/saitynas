@@ -10,6 +10,21 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    public function role() {
+        return $this->belongsTo('App\Role');
+    }
+
+
+    public function topics() {
+        return $this->hasMany('\App\Topic');
+    }
+
+    public function posts() {
+        return $this->hasMany('\App\Post');
+    }
+
+
+
     /**
      * The attributes that are mass assignable.
      *

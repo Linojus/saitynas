@@ -20,33 +20,53 @@ class PostController extends Controller
 
     public function store(Request $request, $topic_id)
     {
-        $post = Post::create($request->all());
+        $post_data = $request->only('body');
+        $post_data['topic_id'] = $topic_id;
+        $post_data['user_id'] = auth()->user()->id;
 
-        //return response()->json($request->only(['topic_id', 'user_id']), 201);
+        $post = Post::create($post_data);
 
         return response()->json($post, 201);
     }
 
     public function update($topic_id, Request $request, Post $post)
     {
-        $post->update($request->all());
+        if ($this->isAdmin() || auth()->user()['id'] == $post['user_id']) {
 
-        return response()->json($post, 200);
+            $post->update($request->only('body'));
+            return response()->json($post, 200);
+
+        } else {
+            return response()->json(['status' => 'Forbidden resource'], 403);
+        }
+
+
     }
 
     public function delete($topic_id, Post $post)
     {
-        $result = $post->delete();
+        if ($this->isAdmin() || auth()->user()['id'] == $post['user_id']) {
 
-        if ($result == true) {
-            $resp = array(
-                'response' => true,
-            );
-            return response()->json([
-                'success' => true
-            ], 200);
-            //204 default?
+            $result = $post->delete();
+
+            if ($result == true) {
+                $resp = array(
+                    'response' => true,
+                );
+                return response()->json([
+                    'success' => true
+                ], 200);
+                //204 default?
+            } else return 404;
+
+        } else {
+            return response()->json(['status' => 'Forbidden resource'], 403);
         }
-        else return 404;
     }
+
+    private function isAdmin()
+    {
+        return auth()->user()->role['name'] == 'admin';
+    }
+
 }

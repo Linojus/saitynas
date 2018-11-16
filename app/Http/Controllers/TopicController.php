@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Topic;
 use Illuminate\Http\Request;
+use \App\User;
 
 class TopicController extends Controller
 {
     public function index()
     {
+       // return response()->json(['status' => auth()->user()->posts ]);
         return Topic::all();
     }
 
@@ -19,31 +21,52 @@ class TopicController extends Controller
 
     public function store(Request $request)
     {
-        $topic = Topic::create($request->all());
+        $topic_data = $request->only('title', 'body');
+        $topic_data['user_id'] = auth()->user()->id;
+
+        $topic = Topic::create($topic_data);
 
         return response()->json($topic, 201);
     }
 
     public function update(Request $request, Topic $topic)
     {
-        $topic->update($request->all());
+        if ($this->isAdmin() || auth()->user()['id'] == $topic['user_id']) {
 
-        return response()->json($topic, 200);
+            $topic->update($request->only('title', 'body'));
+            return response()->json($topic, 200);
+
+        } else {
+            return response()->json(['status' => 'Forbidden resource'], 403);
+        }
     }
 
     public function delete(Topic $topic)
     {
-        $result = $topic->delete();
 
-        if ($result == true) {
-            $resp = array(
-                'response' => true,
-            );
-            return response()->json([
-                'success' => true
-            ], 200);
-            //204 default?
+        if ($this->isAdmin() || auth()->user()['id'] == $topic['user_id']) {
+
+            $result = $topic->delete();
+
+            if ($result == true) {
+                $resp = array(
+                    'response' => true,
+                );
+                return response()->json([
+                    'success' => true
+                ], 200);
+                //204 default?
+            }
+            else return 404;
+
+        } else {
+            return response()->json(['status' => 'Forbidden resource'], 403);
         }
-        else return 404;
+
     }
+
+    private function isAdmin() {
+        return auth()->user()->role['name'] == 'admin';
+    }
+
 }
