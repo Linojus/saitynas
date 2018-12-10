@@ -22,7 +22,8 @@ class AuthController extends Controller
         //test
     }
 
-    //login
+    //login OLD
+    /*
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -37,14 +38,62 @@ class AuthController extends Controller
 
         return response()->json(compact('token'));
     }
-
-    //logout
+*/
+    //logout OLD
+    /*
     public function logout()
     {
         auth()->logout(true);
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+
+*/
+    public function logout()
+    {
+        auth()->logout(true);
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'Logged out Successfully.'
+        ], 200);
+    }
+
+    public function refresh()
+    {
+        //if ($token = $this->guard()->refresh()) {
+        if ($token = $this->guard()->refresh()) {
+            return response()
+                ->json(['status' => 'successs'], 200)
+                ->header('Authorization', $token);
+        }
+        return response()->json(['error' => 'refresh_token_error'], 401);
+    }
+    private function guard()
+    {
+        return Auth::guard();
+    }
+
+
+
+    public function login(Request $request)
+    {
+
+        $credentials = $request->only('email', 'password');
+
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+
+        return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
+
+    }
+
+
+
 
     //register
     public function register(Request $request)
@@ -93,6 +142,7 @@ class AuthController extends Controller
 
         }
 
-        return response()->json(compact('user'));
+        //return response()->json(compact('data'));
+        return response()->json(['status' => 'success', 'data' => $user]);
     }
 }

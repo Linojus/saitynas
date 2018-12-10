@@ -10,7 +10,8 @@ class PostController extends Controller
     public function index($topic_id)
     {
         //return Post::all();
-        return Post::where('topic_id', $topic_id)->get();
+        //$posts = $this->user
+        return Post::with('owner')->where('topic_id', $topic_id)->get();
     }
 
     public function show($topic_id, Post $post)

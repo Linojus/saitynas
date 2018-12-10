@@ -11,11 +11,13 @@ class TopicController extends Controller
     public function index()
     {
        // return response()->json(['status' => auth()->user()->posts ]);
-        return Topic::all();
+        return Topic::with('owner')->get();
     }
 
     public function show(Topic $topic)
     {
+        $owner_data = $topic->owner;
+       // $topic['owner'] = $owner_data['name'];
         return $topic;
     }
 

@@ -31,6 +31,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 //Route::group(['middleware' => ['api']], function() {
 
     Route::post('logout', 'AuthController@logout');
+    Route::get('refresh', 'AuthController@refresh');
 
     Route::group(['middleware' => ['checkRole:admin|user']], function() {
         Route::get('user', 'AuthController@getAuthenticatedUser');
@@ -51,6 +52,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     });
 
+    Route::group(['middleware' => ['checkRole:admin']], function() {
+        Route::get('users', 'UserController@index');
+    });
 });
 
 
