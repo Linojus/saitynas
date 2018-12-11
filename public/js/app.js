@@ -2814,7 +2814,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2970,7 +2969,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "post-form-create",
@@ -3086,13 +3084,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       has_error: false,
       posts: null,
-      user_id: null
+      user_id: null,
+      editing_id: null,
+      editing_body: null
     };
   },
   mounted: function mounted() {
@@ -3106,6 +3120,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   props: ['topic_id'],
   methods: {
+    editPost: function editPost(post) {
+      var app = this;
+      axios.put("/topics/".concat(this.topic_id, "/posts/") + post.id, {
+        body: app.editing_body
+      }).then(function (resp) {
+        app.getPosts();
+        alert("Successfully edited");
+      }).catch(function (resp) {
+        alert("Could not delete reply");
+      });
+      app.unsetEditing();
+    },
+    setEditing: function setEditing(post) {
+      var app = this;
+      app.editing_id = post.id;
+      app.editing_body = post.body;
+    },
+    unsetEditing: function unsetEditing() {
+      var app = this;
+      app.editing_id = null;
+      app.editing_body = null;
+    },
     getPosts: function getPosts() {
       var _this2 = this;
 
@@ -3338,6 +3374,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3547,6 +3596,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3556,11 +3616,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       bus: this.bus,
       has_error: false,
-      topic: null
+      topic: null,
+      user_id: null
     };
   },
   mounted: function mounted() {
     this.getTopic();
+    this.user_id = this.$auth.user().id;
   },
   props: ['topic_id'],
   methods: {
@@ -3578,11 +3640,169 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     refreshPosts: function refreshPosts() {
       __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('update_list');
+    },
+    deleteTopic: function deleteTopic() {
+      if (confirm("Do you really want to delete this reply?")) {
+        var app = this;
+        axios.delete("/topics/" + app.topic_id).then(function (resp) {
+          app.$router.push({
+            path: '/'
+          });
+        }).catch(function (resp) {
+          alert("Could not delete this topic");
+        });
+      }
     }
   },
   components: {
     posts: __WEBPACK_IMPORTED_MODULE_1__components_posts___default.a,
     CreatePost: __WEBPACK_IMPORTED_MODULE_2__components_post_form_create___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"@babel/preset-env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"]},\"forceAllTransforms\":true}]],\"plugins\":[\"@babel/plugin-proposal-object-rest-spread\",[\"@babel/plugin-transform-runtime\",{\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/TopicCreate.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TopicCreate",
+  data: function data() {
+    return {
+      form: {
+        title: '',
+        body: ''
+      }
+    };
+  },
+  mounted: function mounted() {//
+  },
+  methods: {
+    saveForm: function saveForm() {
+      event.preventDefault();
+      var app = this;
+      var createForm = app.form;
+      axios.post("/topics", createForm).then(function (resp) {
+        app.$router.push({
+          path: '/topics/' + resp.data.id
+        });
+      }).catch(function (resp) {
+        alert("Could not create your post");
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"@babel/preset-env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"]},\"forceAllTransforms\":true}]],\"plugins\":[\"@babel/plugin-proposal-object-rest-spread\",[\"@babel/plugin-transform-runtime\",{\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/TopicEdit.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TopicEdit",
+  data: function data() {
+    return {
+      form: {
+        title: '',
+        body: ''
+      }
+    };
+  },
+  props: ['topic_id'],
+  mounted: function mounted() {
+    this.getTopic();
+  },
+  methods: {
+    getTopic: function getTopic() {
+      var _this = this;
+
+      this.$http({
+        url: "topics/".concat(this.topic_id),
+        method: 'GET'
+      }).then(function (res) {
+        _this.topic = res.data;
+        _this.form.title = res.data.title;
+        _this.form.body = res.data.body;
+      }, function () {
+        _this.has_error = true;
+      });
+    },
+    editPost: function editPost() {
+      var app = this;
+      axios.put("/topics/".concat(this.topic_id), {
+        title: app.form.title,
+        body: app.form.body
+      }).then(function (resp) {
+        app.$router.push({
+          path: "/topics/".concat(app.topic_id)
+        });
+        alert("Successfully edited");
+      }).catch(function (resp) {
+        console.log(resp);
+        alert("Could not edit topic");
+      });
+    }
   }
 });
 
@@ -7618,7 +7838,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -39645,7 +39865,7 @@ var render = function() {
           _c(
             "a",
             {
-              staticClass: "nav-link disabled",
+              staticClass: "nav-link disabled d-none d-sm-block",
               attrs: {
                 target: "_blank",
                 href: "https://github.com/Linojus/saitynas"
@@ -39827,6 +40047,10 @@ var render = function() {
                     },
                     [
                       _c("div", { staticClass: "form-group" }, [
+                        _c("label", { staticClass: "control-label" }, [
+                          _vm._v("Reply message")
+                        ]),
+                        _vm._v(" "),
                         _c("textarea", {
                           directives: [
                             {
@@ -39837,7 +40061,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { placeholder: "your reply..." },
+                          attrs: { placeholder: "..." },
                           domProps: { value: _vm.form.body },
                           on: {
                             input: function($event) {
@@ -40261,11 +40485,83 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-12 post-body py-3" }, [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(post.body) +
-                            "\n                "
-                        )
+                        _vm.editing_id == post.id
+                          ? _c("div", [
+                              _c(
+                                "form",
+                                {
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      _vm.editPost(post)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("div", { staticClass: "form-group" }, [
+                                    _c(
+                                      "textarea",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.editing_body,
+                                            expression: "editing_body"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { rows: "8" },
+                                        domProps: { value: _vm.editing_body },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.editing_body =
+                                              $event.target.value
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("post.body")]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "form-group text-right" },
+                                    [
+                                      _c(
+                                        "button",
+                                        { staticClass: "btn btn-outline-dark" },
+                                        [_vm._v("Save")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-outline-danger",
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              return _vm.unsetEditing($event)
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Cancel")]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ])
+                          : _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(post.body) +
+                                  "\n                    "
+                              )
+                            ])
                       ]),
                       _vm._v(" "),
                       _vm.$auth.check(1) || _vm.user_id == post.owner.id
@@ -40275,9 +40571,21 @@ var render = function() {
                               staticClass: "col-12 post-footer text-right p-1 "
                             },
                             [
-                              _vm._v(
-                                "\n                    edit /\n                    "
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "edit-link",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.setEditing(post)
+                                    }
+                                  }
+                                },
+                                [_vm._v(" Edit ")]
                               ),
+                              _vm._v(" /\n                    "),
                               _c(
                                 "a",
                                 {
@@ -40490,6 +40798,226 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-5c5876d9", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-61d64420\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/TopicEdit.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "py-2", attrs: { id: "TopicEdit" } }, [
+    _c("div", { staticClass: "card card-default" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.editPost($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "control-label" }, [_vm._v("Title")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.title,
+                    expression: "form.title"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.form.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "title", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "control-label" }, [
+                _vm._v("Content")
+              ]),
+              _vm._v(" "),
+              _c(
+                "textarea",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.body,
+                      expression: "form.body"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { rows: "10" },
+                  domProps: { value: _vm.form.body },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "body", $event.target.value)
+                    }
+                  }
+                },
+                [_vm._v("form.body")]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group text-right" },
+              [
+                _c("button", { staticClass: "btn btn-dark" }, [_vm._v("Save")]),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-danger",
+                    attrs: {
+                      to: { name: "topic", params: { topic_id: _vm.topic_id } }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Cancel\n                    "
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-61d64420", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-62498692\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/TopicCreate.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "py-2", attrs: { id: "TopicCreate" } }, [
+    _c("div", { staticClass: "card card-default" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                _vm.saveForm()
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { staticClass: "control-label" }, [_vm._v("Title")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.title,
+                    expression: "form.title"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.form.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "title", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { staticClass: "control-label" }, [
+                _vm._v("Content")
+              ]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.body,
+                    expression: "form.body"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { rows: "8", placeholder: "your topic content.." },
+                domProps: { value: _vm.form.body },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "body", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group text-right" }, [
+      _c("button", { staticClass: "btn btn-dark" }, [_vm._v("Post")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-62498692", module.exports)
   }
 }
 
@@ -40799,6 +41327,40 @@ var render = function() {
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
+      _vm.topic && (_vm.$auth.check(1) || _vm.user_id == _vm.topic.owner.id)
+        ? _c(
+            "div",
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "edit-link",
+                  attrs: {
+                    to: {
+                      name: "topicEdit",
+                      params: { topic_id: _vm.topic_id }
+                    }
+                  }
+                },
+                [_vm._v("\n             Edit\n        ")]
+              ),
+              _vm._v("\n        /\n        "),
+              _c(
+                "a",
+                {
+                  staticClass: "delete-link",
+                  attrs: { href: "#" },
+                  on: { click: _vm.deleteTopic }
+                },
+                [_vm._v(" Delete ")]
+              ),
+              _vm._v(" this topic\n\n        "),
+              _c("hr")
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c("CreatePost", { attrs: { topicId: _vm.topic_id, bus: _vm.bus } }),
       _vm._v(" "),
       _c("div", { staticClass: "card card-default" }, [
@@ -40848,7 +41410,34 @@ var render = function() {
               "div",
               { staticClass: "card card-default" },
               [
-                _c("div", { staticClass: "card-header" }, [_vm._v("Topics")]),
+                _c("div", { staticClass: "card-header" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-4 col-12" }, [
+                      _vm._v(
+                        "\n                        Topics\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-md-8 col-12 text-right" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "add-link",
+                            attrs: { to: { name: "topicCreate" } }
+                          },
+                          [
+                            _c("i", { staticClass: "fas fa-plus" }),
+                            _vm._v(" new topic\n                        ")
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body py-1" }),
                 _vm._v(" "),
@@ -55565,6 +56154,102 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/pages/TopicCreate.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"@babel/preset-env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"]},\"forceAllTransforms\":true}]],\"plugins\":[\"@babel/plugin-proposal-object-rest-spread\",[\"@babel/plugin-transform-runtime\",{\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/TopicCreate.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-62498692\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/TopicCreate.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/pages/TopicCreate.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-62498692", Component.options)
+  } else {
+    hotAPI.reload("data-v-62498692", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/TopicEdit.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"@babel/preset-env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"]},\"forceAllTransforms\":true}]],\"plugins\":[\"@babel/plugin-proposal-object-rest-spread\",[\"@babel/plugin-transform-runtime\",{\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/TopicEdit.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-61d64420\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/TopicEdit.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/pages/TopicEdit.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-61d64420", Component.options)
+  } else {
+    hotAPI.reload("data-v-61d64420", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/pages/admin/Dashboard.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55678,7 +56363,13 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_admin_Dashboard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__pages_admin_Dashboard__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Topic__ = __webpack_require__("./resources/js/pages/Topic.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Topic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__pages_Topic__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_TopicCreate__ = __webpack_require__("./resources/js/pages/TopicCreate.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_TopicCreate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_TopicCreate__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_TopicEdit__ = __webpack_require__("./resources/js/pages/TopicEdit.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_TopicEdit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__pages_TopicEdit__);
  // Pages
+
+
 
 
 
@@ -55733,6 +56424,21 @@ var routes = [{
   }
 }, //BOTH ROLES ROUTES
 {
+  path: '/topics/new',
+  name: 'topicCreate',
+  component: __WEBPACK_IMPORTED_MODULE_7__pages_TopicCreate___default.a,
+  meta: {
+    auth: true
+  }
+}, {
+  path: '/topics/:topic_id/edit',
+  name: 'topicEdit',
+  props: true,
+  component: __WEBPACK_IMPORTED_MODULE_8__pages_TopicEdit___default.a,
+  meta: {
+    auth: true
+  }
+}, {
   path: '/topics/:topic_id',
   name: 'topic',
   props: true,

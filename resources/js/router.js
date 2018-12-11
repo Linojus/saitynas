@@ -6,6 +6,9 @@ import Login from './pages/Login'
 import Dashboard from './pages/user/Dashboard'
 import AdminDashboard from './pages/admin/Dashboard'
 import Topic from './pages/Topic'
+import TopicCreate from './pages/TopicCreate'
+import TopicEdit from './pages/TopicEdit'
+
 // Routes
 //path root '/saitynas/public'
 const routes = [
@@ -52,6 +55,24 @@ const routes = [
         }
     },
     //BOTH ROLES ROUTES
+
+    {
+        path: '/topics/new',
+        name: 'topicCreate',
+        component: TopicCreate,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/topics/:topic_id/edit',
+        name: 'topicEdit',
+        props: true,
+        component: TopicEdit,
+        meta: {
+            auth: true
+        }
+    },
     {
         path: '/topics/:topic_id',
         name: 'topic',

@@ -24,11 +24,25 @@
                     </div>
 
                     <div class="col-12 post-body py-3">
-                        {{ post.body }}
+                        <div v-if="editing_id == post.id">
+                            <form v-on:submit.prevent="editPost(post)">
+                                <div class="form-group">
+                                    <textarea rows="8" class="form-control" v-model="editing_body">post.body</textarea>
+                                </div>
+                                <div class="form-group text-right">
+                                    <button class="btn btn-outline-dark">Save</button>
+                                    <button v-on:click.prevent="unsetEditing" class="btn btn-outline-danger">Cancel</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div v-else>
+                            {{ post.body }}
+                        </div>
                     </div>
 
                     <div v-if="$auth.check(1) || user_id == post.owner.id" class="col-12 post-footer text-right p-1 ">
-                        edit /
+                        <a href="#" class="edit-link" v-on:click.prevent="setEditing(post)"> Edit </a> /
                         <a href="#" class="delete-link" v-on:click="deletePost(post.id, index)"> Delete </a>
                     </div>
                 </div>
@@ -68,7 +82,9 @@
             return {
                 has_error: false,
                 posts: null,
-                user_id: null
+                user_id: null,
+                editing_id: null,
+                editing_body: null,
             }
         },
         mounted() {
@@ -78,13 +94,35 @@
         },
         props: ['topic_id'],
         methods: {
+            editPost(post) {
+                var app = this;
+                axios.put(`/topics/${this.topic_id}/posts/` + post.id, { body: app.editing_body })
+                    .then(function (resp) {
+                        app.getPosts();
+                        alert("Successfully edited");
+                    })
+                    .catch(function (resp) {
+                        alert("Could not delete reply");
+                    });
+                app.unsetEditing();
+            },
+            setEditing(post){
+                var app = this;
+                app.editing_id = post.id;
+                app.editing_body = post.body;
+            },
+            unsetEditing() {
+                var app = this;
+                app.editing_id = null;
+                app.editing_body = null;
+            },
             getPosts() {
                 this.$http({
                     url: `topics/${this.topic_id}/posts`,
                     method: 'GET'
                 })
                     .then((res) => {
-                        this.posts = res.data
+                        this.posts = res.data;
                     }, () => {
                         this.has_error = true
                     })
@@ -101,6 +139,6 @@
                         });
                 }
             }
-        }
+        },
     }
 </script>

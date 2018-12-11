@@ -10581,6 +10581,22 @@ body {
   color: red !important;
 }
 
+.edit-link {
+  color: blue !important;
+}
+
+.edit-link a {
+  color: blue !important;
+}
+
+.add-link {
+  color: #1d643b;
+}
+
+.add-link:hover {
+  color: #2d995b;
+}
+
 .welcome #welcome_unlogged .frog {
   max-width: 300px;
   width: 90%;
@@ -10706,6 +10722,14 @@ footer .navbar {
 }
 
 footer .navbar a {
+  color: #C09F80;
+}
+
+footer .navbar .navbar-brand {
+  color: #D7CEC7;
+}
+
+footer .navbar .nav-link {
   color: #C09F80;
 }
 

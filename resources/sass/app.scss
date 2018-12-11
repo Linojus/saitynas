@@ -32,6 +32,8 @@ $grain: #D7CEC7;
 $blackboard: #565656;
 $oxblood: #76323F;
 $tan: #C09F80;
+$forest: #1d643b;
+$forest-hover: #2d995b;
 
 $oxbloodRGB: rgba(118, 50, 63, 0.5);
 $blackboardRGB: rgba(86,86,86, 0.25);
@@ -58,7 +60,18 @@ body {
     color:red !important;
   }
 }
-
+.edit-link {
+  color:blue !important;
+  a {
+    color:blue !important;
+  }
+}
+.add-link{
+  color: $forest;
+}
+.add-link:hover {
+  color: $forest-hover;
+}
 .welcome {
 
   #welcome_unlogged {
@@ -199,6 +212,12 @@ footer {
     color: $tan;
     background-color: $blackboard;
     a{
+      color: $tan;
+    }
+    .navbar-brand {
+      color: $grain;
+    }
+    .nav-link{
       color: $tan;
     }
   }

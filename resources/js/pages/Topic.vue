@@ -13,6 +13,17 @@
 
         <hr>
 
+        <div v-if=" topic && ($auth.check(1) || user_id == topic.owner.id)">
+
+            <router-link class="edit-link" :to="{ name : 'topicEdit', params: { topic_id: topic_id} }">
+                 Edit
+            </router-link>
+            /
+            <a href="#" class="delete-link" v-on:click="deleteTopic"> Delete </a> this topic
+
+            <hr>
+        </div>
+
         <CreatePost :topicId="topic_id" :bus="bus"></CreatePost>
 
         <div class="card card-default">
@@ -25,7 +36,7 @@
 </template>
 <script>
 
-    import { EventBus } from '../event-bus.js';
+    import {EventBus} from '../event-bus.js';
     import posts from '../components/posts'
     import CreatePost from '../components/post-form-create'
 
@@ -36,10 +47,12 @@
                 bus: this.bus,
                 has_error: false,
                 topic: null,
+                user_id: null,
             }
         },
         mounted() {
             this.getTopic();
+            this.user_id = this.$auth.user().id;
         },
         props: ['topic_id'],
         methods: {
@@ -56,6 +69,18 @@
             },
             refreshPosts() {
                 EventBus.$emit('update_list');
+            },
+            deleteTopic() {
+                if (confirm("Do you really want to delete this reply?")) {
+                    var app = this;
+                    axios.delete(`/topics/` + app.topic_id)
+                        .then(function (resp) {
+                            app.$router.push({path: '/'});
+                        })
+                        .catch(function (resp) {
+                            alert("Could not delete this topic");
+                        });
+                }
             },
         },
         components: {

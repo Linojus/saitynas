@@ -18,9 +18,8 @@
                 <div v-if="show" class="card-body">
                     <form v-on:submit="saveForm()">
                         <div class="form-group">
-                            <!--<label class="control-label">Post body</label>-->
-                            <!--<input type="text" v-model="form.body" class="form-control">-->
-                            <textarea class="form-control" placeholder="your reply..." v-model="form.body"></textarea>
+                            <label class="control-label">Reply message</label>
+                            <textarea class="form-control" placeholder="..." v-model="form.body"></textarea>
                         </div>
                         <div class="form-group text-right">
                             <button class="btn btn-dark">Post</button>
@@ -73,7 +72,6 @@
                         app.form.body = '';
                         app.showModal = true;
                         app.show = false;
-
                     })
                     .catch(function (resp) {
                         console.log(resp);

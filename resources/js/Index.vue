@@ -16,11 +16,10 @@
             <nav class="navbar fixed-bottom navbar-light bg-faded">
                 <div class="container">
                     <a class="navbar-brand" href="#">to Top <i class="fas fa-long-arrow-alt-up"></i> </a>
-                    <a class="nav-link disabled" target="_blank" href="https://github.com/Linojus/saitynas">
+                    <a class="nav-link disabled d-none d-sm-block" target="_blank" href="https://github.com/Linojus/saitynas">
                         by Linas Juodvalkis IFF-5/9, ©{{ new Date().getFullYear() }}
                         <i class="fab fa-github"></i>
                     </a>
-
                 </div>
             </nav>
         </footer>
