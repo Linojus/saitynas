@@ -4,17 +4,25 @@
             <navigationMenu></navigationMenu>
         </header>
 
-        <div id="content" class="mt-5 pt-5">
+        <div id="content" >
             <div class="container">
                 <router-view></router-view>
             </div>
         </div>
 
-        <nav class="navbar fixed-bottom navbar-light bg-faded" style="background: aqua">
-            <a class="navbar-brand" href="#">Fixed bottom</a>
-        </nav>
+
         <footer id="footer">
 
+            <nav class="navbar fixed-bottom navbar-light bg-faded">
+                <div class="container">
+                    <a class="navbar-brand" href="#">to Top <i class="fas fa-long-arrow-alt-up"></i> </a>
+                    <a class="nav-link disabled" target="_blank" href="https://github.com/Linojus/saitynas">
+                        by Linas Juodvalkis IFF-5/9, ©{{ new Date().getFullYear() }}
+                        <i class="fab fa-github"></i>
+                    </a>
+
+                </div>
+            </nav>
         </footer>
     </div>
 </template>

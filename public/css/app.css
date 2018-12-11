@@ -10466,6 +10466,90 @@ a.text-dark:focus {
   }
 }
 
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 300px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-default-button {
+  float: right;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+#app {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.smooth-enter-active,
+.smooth-leave-active {
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.smooth-enter,
+.smooth-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
@@ -10478,9 +10562,134 @@ body {
   background-color: ivory;
 }
 
+#content {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+@media only screen and (max-width: 768px) {
+  #content {
+    margin-bottom: 120px;
+  }
+}
+
+.delete-link {
+  color: red !important;
+}
+
+.delete-link a {
+  color: red !important;
+}
+
+.welcome #welcome_unlogged .frog {
+  max-width: 300px;
+  width: 90%;
+  min-width: 150px;
+}
+
+.welcome #welcome_logged .frog {
+  min-width: 100%;
+}
+
+.card {
+  border: none;
+  border-radius: 0;
+  background-color: #C09F80;
+  color: #76323F;
+}
+
+.card-header {
+  font-size: 24px;
+}
+
+.topic,
+.post {
+  background-color: ivory;
+  border: 1px solid #565656;
+  padding: 10px;
+  margin: 10px 0;
+  color: #565656;
+  font-size: 18px;
+}
+
+.topic .side-info,
+.post .side-info {
+  font-size: 15px;
+}
+
+.topic a,
+.post a {
+  color: #76323F;
+}
+
+.topic .frog,
+.post .frog {
+  width: 25px;
+  padding-right: 4px;
+  vertical-align: sub;
+  /*filter: invert(100%);*/
+}
+
+@media only screen and (max-width: 768px) {
+  .topic .side-info,
+  .post .side-info {
+    border-top: 1px solid #565656;
+    text-align: left !important;
+    font-size: 12px;
+    padding-top: 3px;
+  }
+}
+
+.post {
+  font-size: 16px;
+}
+
+.post .post-header {
+  color: #76323F;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(86, 86, 86, 0.25);
+}
+
+.post .post-footer {
+  color: #76323F;
+  font-size: 14px;
+  border-top: 1px solid rgba(86, 86, 86, 0.25);
+}
+
+@media only screen and (max-width: 768px) {
+  .post div {
+    padding: 4px !important;
+  }
+}
+
+.topic-main {
+  padding-top: 10px;
+}
+
+.topic-main .topic-main-title {
+  font-size: 24px;
+}
+
+.topic-main .topic-main-info {
+  color: #76323F;
+  font-size: 12px;
+}
+
+.topic-main .topic-main-body {
+  font-size: 16px;
+}
+
 header .navbar {
   color: #565656;
   background-color: #D7CEC7;
+}
+
+header .navbar .custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(118, 50, 63, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+header .navbar .custom-toggler.navbar-toggler {
+  border-color: #76323F;
 }
 
 header .navbar a {
@@ -10491,9 +10700,12 @@ header .navbar a:hover {
   color: #565656;
 }
 
-footer {
-  color: #565656;
-  background-color: #C09F80;
-  height: 20px;
+footer .navbar {
+  color: #C09F80;
+  background-color: #565656;
+}
+
+footer .navbar a {
+  color: #C09F80;
 }
 

@@ -11,7 +11,7 @@ class TopicController extends Controller
     public function index()
     {
        // return response()->json(['status' => auth()->user()->posts ]);
-        return Topic::with('owner')->get();
+        return Topic::with('owner')->orderBy('updated_at', 'DESC')->orderBy('id', 'desc')->get();
     }
 
     public function show(Topic $topic)

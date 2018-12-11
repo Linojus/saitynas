@@ -10,7 +10,7 @@ import Topic from './pages/Topic'
 //path root '/saitynas/public'
 const routes = [
     {
-        path: '/saitynas/public',
+        path: '/',
         name: 'home',
         component: Home,
         meta: {
@@ -18,7 +18,7 @@ const routes = [
         }
     },
     {
-        path: '/saitynas/public/register',
+        path: '/register',
         name: 'register',
         component: Register,
         meta: {
@@ -26,7 +26,7 @@ const routes = [
         }
     },
     {
-        path: '/saitynas/public/login',
+        path: '/login',
         name: 'login',
         component: Login,
         meta: {
@@ -35,7 +35,7 @@ const routes = [
     },
     // USER ROUTES
     {
-        path: '/saitynas/public/dashboard',
+        path: '/dashboard',
         name: 'dashboard',
         component: Dashboard,
         meta: {
@@ -44,7 +44,7 @@ const routes = [
     },
     // ADMIN ROUTES
     {
-        path: '/saitynas/public/admin',
+        path: '/admin',
         name: 'admin.dashboard',
         component: AdminDashboard,
         meta: {
@@ -53,7 +53,7 @@ const routes = [
     },
     //BOTH ROLES ROUTES
     {
-        path: '/saitynas/public/topics/:topic_id',
+        path: '/topics/:topic_id',
         name: 'topic',
         props: true,
         component: Topic,
@@ -65,6 +65,7 @@ const routes = [
 const router = new VueRouter({
     history: true,
     mode: 'history',
+    base: '/saitynas/public/',
     routes,
 })
 export default router

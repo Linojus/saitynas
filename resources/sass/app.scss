@@ -7,6 +7,21 @@
 //google font
 @import url('https://fonts.googleapis.com/css?family=Comfortaa');
 
+@import 'modal';
+
+#app {
+  transition: all 0.2s;
+}
+//transitions
+.smooth-enter-active, .smooth-leave-active {
+  transition: all 0.5s;
+}
+.smooth-enter, .smooth-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
@@ -18,16 +33,152 @@ $blackboard: #565656;
 $oxblood: #76323F;
 $tan: #C09F80;
 
+$oxbloodRGB: rgba(118, 50, 63, 0.5);
+$blackboardRGB: rgba(86,86,86, 0.25);
+
+$small-screen: "only screen and (max-width : 768px)";
+
 body {
   font-family: 'Comfortaa', cursive;
   color: $blackboard;
   background-color: ivory;
 }
 
+#content {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  @media #{$small-screen} {
+    margin-bottom: 120px;
+  }
+}
+
+.delete-link {
+  color:red !important;
+  a {
+    color:red !important;
+  }
+}
+
+.welcome {
+
+  #welcome_unlogged {
+    .frog {
+      max-width: 300px;
+      width: 90%;
+      min-width: 150px;
+    }
+  }
+
+  #welcome_logged {
+    .frog {
+      min-width: 100%;
+    }
+  }
+}
+
+.card{
+  border: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+
+  background-color: $tan;
+  color: $oxblood;
+
+}
+.card-header {
+  font-size: 24px;
+}
+
+.topic {
+  background-color: ivory;
+  border: 1px solid $blackboard;
+  padding: 10px;
+  margin: 10px 0;
+
+  color: $blackboard;
+  font-size: 18px;
+
+  .side-info{
+    font-size: 15px;
+  }
+
+  a {
+    color: $oxblood;
+  }
+
+  .frog {
+    width: 25px;
+    padding-right: 4px;
+    vertical-align: sub;
+    /*filter: invert(100%);*/
+  }
+
+  @media #{$small-screen} {
+    .side-info {
+      border-top: 1px solid $blackboard;
+      text-align: left !important;
+      font-size: 12px;
+      padding-top: 3px;
+    }
+  }
+
+}
+
+.post {
+  @extend .topic;
+
+  font-size: 16px;
+
+  .post-header {
+    color: $oxblood;
+    font-size: 14px;
+    border-bottom: 1px solid $blackboardRGB;
+  }
+  .post-body {
+
+  }
+
+  .post-footer {
+    color: $oxblood;
+    font-size: 14px;
+    border-top: 1px solid $blackboardRGB;
+  }
+  @media #{$small-screen} {
+    div {
+      padding: 4px !important;
+    }
+  }
+}
+
+.topic-main {
+
+  padding-top: 10px;
+
+  .topic-main-title {
+    font-size: 24px;
+  }
+  .topic-main-info {
+    color: $oxblood;
+    font-size: 12px;
+  }
+  .topic-main-body {
+    font-size: 16px;
+  }
+
+}
+
+
 header {
-
-
   .navbar {
+
+    .custom-toggler .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$oxbloodRGB}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    }
+
+    .custom-toggler.navbar-toggler {
+      border-color: $oxblood;
+    }
 
     color: $blackboard;
     background-color: $grain;
@@ -43,7 +194,12 @@ header {
 }
 
 footer {
-  color: $blackboard;
-  background-color: $tan;
-  height: 20px;
+
+  .navbar {
+    color: $tan;
+    background-color: $blackboard;
+    a{
+      color: $tan;
+    }
+  }
 }
